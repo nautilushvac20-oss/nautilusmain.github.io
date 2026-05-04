@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nautilus HVAC Maintenance Plan Signup</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: rgba(255,255,255,0.06);
+      --panel-solid: #ffffff;
+      --panel-dark: #0f172a;
+      --text: #e2e8f0;
+      --text-dark: #0f172a;
+      --muted: #94a3b8;
+      --line: rgba(255,255,255,0.14);
+      --accent: #34d399;
+      --accent-dark: #059669;
+      --danger: #b45309;
+      --warn-bg: #fef3c7;
+      --warn-line: #fde68a;
+      --radius: 26px;
+      --shadow: 0 24px 60px rgba(0,0,0,0.3);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(52,211,153,0.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,0.16), transparent 34%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-badge {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(52,211,153,0.12);
+      border: 1px solid rgba(167,243,208,0.25);
+    }
+
+    .brand-kicker {
+      margin: 0 0 4px;
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #bbf7d0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .pill {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font-size: 14px;
+      backdrop-filter: blur(8px);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: white;
+      max-width: 760px;
+    }
+
+    .hero p {
+      margin: 16px 0 0;
+      max-width: 720px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .plan-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .plan-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 22px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .plan-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .plan-card.active {
+      border-color: rgba(167,243,208,0.8);
+      background: rgba(52,211,153,0.12);
+      box-shadow: 0 22px 40px rgba(6, 78, 59, 0.35);
+    }
+
+    .tag {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      background: #a7f3d0;
+      color: #052e16;
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      color: #a7f3d0;
+      margin-bottom: 14px;
+    }
+
+    .plan-name {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      color: white;
+      padding-right: 68px;
+    }
+
+    .plan-desc {
+      margin: 10px 0 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      min-height: 40px;
+    }
+
+    .price-line {
+      margin-top: 14px;
+      display: flex;
+      align-items: end;
+      gap: 5px;
+    }
+
+    .price {
+      font-size: 40px;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+
+    .per {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .details-card,
+    .form-card {
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .details-card {
+      margin-top: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      padding: 24px;
+    }
+
+    .details-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .details-head h3,
+    .form-title {
+      margin: 0;
+      font-size: 24px;
+      color: white;
+      font-weight: 800;
+    }
+
+    .details-sub {
+      margin: 6px 0 0;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .mini-price {
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px 16px;
+      text-align: right;
+      min-width: 108px;
+    }
+
+    .mini-price strong {
+      display: block;
+      font-size: 30px;
+      color: white;
+    }
+
+    .mini-price span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 18px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .check {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      color: #a7f3d0;
+      flex: 0 0 auto;
+    }
+
+    .form-card {
+      background: white;
+      color: var(--text-dark);
+      padding: 28px;
+    }
+
+    .form-title {
+      color: var(--text-dark);
+    }
+
+    .form-sub {
+      margin: 8px 0 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: #475569;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .two-up {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field label,
+    .standalone-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 20px;
+      height: 20px;
+      color: #94a3b8;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 14px 14px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      background: white;
+      color: #0f172a;
+    }
+
+    .with-icon { padding-left: 42px; }
+
+    input:focus, select:focus {
+      border-color: var(--accent-dark);
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.14);
+    }
+
+    .billing-box {
+      border-radius: 24px;
+      background: #f1f5f9;
+      padding: 16px;
+    }
+
+    .billing-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .billing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .billing-button {
+      border: 1px solid transparent;
+      border-radius: 18px;
+      padding: 14px;
+      text-align: left;
+      cursor: pointer;
+      background: #e2e8f0;
+      color: #0f172a;
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .billing-button.active {
+      background: white;
+      border-color: var(--accent-dark);
+    }
+
+    .billing-button strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .billing-button span { color: #475569; font-size: 13px; }
+
+    .checkout-box {
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 18px;
+    }
+
+    .checkout-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .checkout-note {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #475569;
+    }
+
+    .summary {
+      border-radius: 24px;
+      padding: 20px;
+      background: #0f172a;
+      color: white;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .summary-row + .summary-row { margin-top: 10px; }
+
+    .summary-label { color: #cbd5e1; font-size: 14px; }
+    .summary-value { font-weight: 800; text-align: right; }
+    .summary-due {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .summary-small {
+      margin-top: 12px;
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .warn {
+      border: 1px solid var(--warn-line);
+      background: var(--warn-bg);
+      border-radius: 20px;
+      padding: 16px;
+      color: #78350f;
+    }
+
+    .warn strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .warn ul {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 12px;
+      align-items: start;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .checkbox-row input {
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      box-shadow: none;
+    }
+
+    .submit {
+      width: 100%;
+      border: none;
+      border-radius: 20px;
+      background: var(--accent-dark);
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
+      padding: 18px;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .submit:hover {
+      background: #047857;
+      transform: translateY(-1px);
+    }
+
+    .helper {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .success, .error {
+      display: none;
+      margin-top: 14px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success { background: #dcfce7; color: #166534; }
+    .error { background: #fee2e2; color: #991b1b; }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .plan-grid,
+      .feature-grid,
+      .two-up,
+      .billing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 20px 14px 32px; }
+      .form-card, .details-card { padding: 20px; }
+      .brand-title { font-size: 24px; }
+      .summary-due { font-size: 30px; }
+      .price { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"></path>
+            <path d="M2 18c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"></path>
+            <path d="M2 6c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="brand-kicker">Nautilus HVAC</p>
+          <h1 class="brand-title">Maintenance Plan Signup</h1>
+        </div>
+      </div>
+      <div class="pill">Moving forward together</div>
+    </div>
+
+    <div class="layout">
+      <section>
+        <div class="hero">
+          <h2>Protect your comfort with automatic monthly maintenance coverage.</h2>
+          <p>Choose your plan, enter your service details, and continue to secure recurring checkout. This page is designed to work with Stripe payment links or subscription checkout links.</p>
+        </div>
+
+        <div class="plan-grid" id="planGrid"></div>
+
+        <div class="details-card">
+          <div class="details-head">
+            <div>
+              <h3 id="detailsName">Total Comfort Package</h3>
+              <p class="details-sub">Included with this plan:</p>
+            </div>
+            <div class="mini-price">
+              <strong id="detailsPrice">$35</strong>
+              <span>monthly</span>
+            </div>
+          </div>
+          <div class="feature-grid" id="featureGrid"></div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="form-title">Start Your Plan</h2>
+        <p class="form-sub">Enter your details, choose monthly or annual billing, then continue to secure checkout. Replace the placeholder checkout links in the file before publishing.</p>
+
+        <form id="signupForm" class="form-grid">
+          <div class="two-up">
+            <div class="field">
+              <label for="firstName">First Name</label>
+              <input id="firstName" name="firstName" autocomplete="given-name" placeholder="Jonathan" required />
+            </div>
+            <div class="field">
+              <label for="lastName">Last Name</label>
+              <input id="lastName" name="lastName" autocomplete="family-name" placeholder="Jackson" required />
+            </div>
+          </div>
+
+          <div class="two-up">
+            <div class="field">
+              <label for="phone">Phone</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 11.2 19a19.3 19.3 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.8l-1.3 1.3a16 16 0 0 0 6.4 6.4l1.3-1.3a2 2 0 0 1 1.8-.6l3 .5a2 2 0 0 1 1.7 2Z"></path></svg>
+                <input class="with-icon" id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(770) 560-0250" required />
+              </div>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+                <input class="with-icon" id="email" name="email" type="email" autocomplete="email" placeholder="customer@email.com" required />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="standalone-label" for="serviceAddress">Service Address</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10Z"></path><circle cx="12" cy="11" r="2"></circle></svg>
+              <input class="with-icon" id="serviceAddress" name="serviceAddress" autocomplete="street-address" placeholder="Street, city, state, ZIP" required />
+            </div>
+          </div>
+
+          <div class="two-up">
+            <div class="field">
+              <label for="startDate">Preferred Start Date</label>
+              <input id="startDate" name="startDate" type="date" required />
+            </div>
+            <div class="field">
+              <label for="systems">Number of Systems</label>
+              <select id="systems" name="systems">
+                <option value="1">1 System</option>
+                <option value="2">2 Systems</option>
+                <option value="3">3 Systems</option>
+                <option value="4+">4+ Systems</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="billing-box">
+            <p class="billing-title">Billing Option</p>
+            <div class="billing-grid">
+              <button type="button" class="billing-button active" id="monthlyBtn">
+                <strong>Monthly</strong>
+                <span id="monthlyAmount">$35/month</span>
+              </button>
+              <button type="button" class="billing-button" id="annualBtn">
+                <strong>Annual</strong>
+                <span id="annualAmount">$420/year</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="checkout-box">
+            <div class="checkout-head">
+              <svg class="icon" style="width:20px;height:20px;margin:0;color:#059669" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 1 1 8 0v3"></path></svg>
+              Secure Checkout
+            </div>
+            <p class="checkout-note">For a real live site, use Stripe Payment Links or Stripe subscription checkout links. This page will redirect customers to the right checkout link based on the plan and billing option they select.</p>
+          </div>
+
+          <div class="summary">
+            <div class="summary-row">
+              <span class="summary-label">Selected Plan</span>
+              <span class="summary-value" id="summaryPlan">Total Comfort Package</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Due Today</span>
+              <span class="summary-due" id="summaryDue">$35</span>
+            </div>
+            <div class="summary-small">
+              <div>Recurring payments continue until canceled according to the maintenance agreement terms.</div>
+              <div>Free repairs are available only after 3 full months of active enrollment.</div>
+              <div>Major repair coverage is limited to 1 major repair per year.</div>
+            </div>
+          </div>
+
+          <div class="warn">
+            <strong>Plan Disclaimers</strong>
+            <ul>
+              <li>Customer must be enrolled for 3 months before claiming any free repairs.</li>
+              <li>Major repair coverage is limited to 1 major repair per year.</li>
+            </ul>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="terms" name="terms" type="checkbox" required />
+            <span>I agree to the Nautilus HVAC maintenance plan terms, recurring payment authorization, and repair coverage limits.</span>
+          </label>
+
+          <button class="submit" type="submit">Continue to Secure Checkout</button>
+
+          <div class="helper">Before publishing, replace the checkout links inside the script with your real Stripe or Square subscription links.</div>
+          <div class="success" id="successMessage"></div>
+          <div class="error" id="errorMessage"></div>
+        </form>
+      </section>
+    </div>
+
+    <p class="footer-note">Deploy this file to Netlify, Vercel, GitHub Pages, or any basic web host.</p>
+  </div>
+
+  <script>
+    const plans = [
+      {
+        id: "standard",
+        name: "Basic Package",
+        price: 14,
+        description: "Simple protection for seasonal comfort.",
+        features: [
+          "1 Heating Tune-Up",
+          "1 Cooling Tune-Up",
+          "Priority Scheduling",
+          "10% OFF Repairs"
+        ],
+        icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg>'
+      },
+      {
+        id: "comfort",
+        name: "Standard Comfort Package",
+        price: 25,
+        description: "Balanced coverage with added repair value.",
+        features: [
+          "Everything in Basic Package",
+          "1 free minor repair up to $150",
+          "15% off repairs",
+          "Priority scheduling",
+          "Seasonal system performance check"
+        ],
+        icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg>'
+      },
+      {
+        id: "premium",
+        name: "Total Comfort Package",
+        price: 35,
+        description: "Better savings and extra coverage.",
+        features: [
+          "Everything in Standard Comfort Package",
+          "2 free minor repairs up to $150 each",
+          "15% off repairs",
+          "No after-hours diagnostic upcharge",
+          "Annual system performance report"
+        ],
+        popular: true,
+        icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3Z"></path></svg>'
+      },
+      {
+        id: "diamond",
+        name: "Diamond Comfort Plan",
+        price: 55,
+        description: "Maximum yearly value and peace of mind.",
+        features: [
+          "Everything in Total Comfort Package",
+          "1 major repair credit up to $500 per year",
+          "25% off repairs",
+          "1 free capacitor per year",
+          "Fastest priority scheduling"
+        ],
+        icon: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"></path><path d="m4 18 1.5-9 5 4 3-7 3 7 5-4 1.5 9"></path></svg>'
+      }
+    ];
+
+    const checkoutLinks = {
+      monthly: {
+        standard: "REPLACE_WITH_BASIC_MONTHLY_LINK",
+        comfort: "REPLACE_WITH_STANDARD_COMFORT_MONTHLY_LINK",
+        premium: "REPLACE_WITH_TOTAL_COMFORT_MONTHLY_LINK",
+        diamond: "REPLACE_WITH_DIAMOND_MONTHLY_LINK"
+      },
+      annual: {
+        standard: "REPLACE_WITH_BASIC_ANNUAL_LINK",
+        comfort: "REPLACE_WITH_STANDARD_COMFORT_ANNUAL_LINK",
+        premium: "REPLACE_WITH_TOTAL_COMFORT_ANNUAL_LINK",
+        diamond: "REPLACE_WITH_DIAMOND_ANNUAL_LINK"
+      }
+    };
+
+    let selectedPlan = "premium";
+    let billing = "monthly";
+
+    const planGrid = document.getElementById("planGrid");
+    const featureGrid = document.getElementById("featureGrid");
+    const detailsName = document.getElementById("detailsName");
+    const detailsPrice = document.getElementById("detailsPrice");
+    const summaryPlan = document.getElementById("summaryPlan");
+    const summaryDue = document.getElementById("summaryDue");
+    const monthlyAmount = document.getElementById("monthlyAmount");
+    const annualAmount = document.getElementById("annualAmount");
+    const monthlyBtn = document.getElementById("monthlyBtn");
+    const annualBtn = document.getElementById("annualBtn");
+    const signupForm = document.getElementById("signupForm");
+    const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
+    const startDateInput = document.getElementById("startDate");
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function getPlanById(id) {
+      return plans.find((plan) => plan.id === id) || plans.find((plan) => plan.id === "premium") || plans[0];
+    }
+
+    function todayString() {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function renderPlanCards() {
+      planGrid.innerHTML = plans.map((plan) => `
+        <button type="button" class="plan-card ${selectedPlan === plan.id ? "active" : ""}" data-plan-id="${plan.id}">
+          ${plan.popular ? '<span class="tag">Popular</span>' : ""}
+          ${plan.icon}
+          <h3 class="plan-name">${plan.name}</h3>
+          <p class="plan-desc">${plan.description}</p>
+          <div class="price-line">
+            <span class="price">${formatCurrency(plan.price)}</span>
+            <span class="per">/mo</span>
+          </div>
+        </button>
+      `).join("");
+
+      Array.from(planGrid.querySelectorAll("[data-plan-id]")).forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedPlan = button.getAttribute("data-plan-id");
+          render();
+        });
+      });
+    }
+
+    function renderFeatures() {
+      const plan = getPlanById(selectedPlan);
+      detailsName.textContent = plan.name;
+      detailsPrice.textContent = formatCurrency(plan.price);
+      featureGrid.innerHTML = plan.features.map((feature) => `
+        <div class="feature-item">
+          <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span>${feature}</span>
+        </div>
+      `).join("");
+
+      monthlyAmount.textContent = `${formatCurrency(plan.price)}/month`;
+      annualAmount.textContent = `${formatCurrency(plan.price * 12)}/year`;
+      summaryPlan.textContent = plan.name;
+      summaryDue.textContent = billing === "monthly" ? formatCurrency(plan.price) : formatCurrency(plan.price * 12);
+      monthlyBtn.classList.toggle("active", billing === "monthly");
+      annualBtn.classList.toggle("active", billing === "annual");
+    }
+
+    function render() {
+      renderPlanCards();
+      renderFeatures();
+    }
+
+    monthlyBtn.addEventListener("click", () => {
+      billing = "monthly";
+      renderFeatures();
+    });
+
+    annualBtn.addEventListener("click", () => {
+      billing = "annual";
+      renderFeatures();
+    });
+
+    signupForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      successMessage.style.display = "none";
+      errorMessage.style.display = "none";
+
+      if (!signupForm.reportValidity()) {
+        return;
+      }
+
+      const url = checkoutLinks[billing][selectedPlan];
+
+      if (!url || url.startsWith("REPLACE_WITH_")) {
+        errorMessage.textContent = "Add your real Stripe or Square checkout link in the file before publishing. The current link is still a placeholder.";
+        errorMessage.style.display = "block";
+        return;
+      }
+
+      const customer = {
+        firstName: document.getElementById("firstName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        address: document.getElementById("serviceAddress").value.trim(),
+        startDate: document.getElementById("startDate").value,
+        systems: document.getElementById("systems").value,
+        plan: selectedPlan,
+        billing
+      };
+
+      try {
+        localStorage.setItem("nautilusSignupDraft", JSON.stringify(customer));
+      } catch (error) {
+      }
+
+      successMessage.textContent = "Redirecting to secure checkout...";
+      successMessage.style.display = "block";
+      window.location.href = url;
+    });
+
+    startDateInput.value = todayString();
+    render();
+  </script>
+</body>
+</html>
